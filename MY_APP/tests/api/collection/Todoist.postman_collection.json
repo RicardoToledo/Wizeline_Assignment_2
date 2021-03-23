@@ -1,0 +1,3137 @@
+{
+	"info": {
+		"_postman_id": "bd772f36-4026-4098-89e7-2ccf832eb720",
+		"name": "Todoist",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Positive test cases",
+			"item": [
+				{
+					"name": "PROJECT",
+					"item": [
+						{
+							"name": "Create Project",
+							"item": [
+								{
+									"name": "Create new project",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();",
+													"var name = pm.environment.get(\"projectName\");",
+													"",
+													"pm.environment.set(\"projectId\", jsonData.id);",
+													"pm.environment.set(\"jsonProject\", JSON.stringify(jsonData));",
+													"",
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content, only name is being compared as it's the only required/known value",
+													"pm.test(\"JSON's content is correct\", function () {",
+													"    pm.expect(jsonData.name).to.eql(name);",
+													"});",
+													"",
+													"// Schema",
+													"pm.test(\"Schema is correct\", () => {",
+													"    pm.response.to.have.jsonSchema(pm.variables.get(\"schemaProject\"));",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"schemaProject\",{",
+													"    \"title\": \"Project schema\",",
+													"    \"required\": [",
+													"        \"id\",",
+													"        \"order\",",
+													"        \"color\",",
+													"        \"name\",",
+													"        \"comment_count\",",
+													"        \"shared\",",
+													"        \"favorite\",",
+													"        \"sync_id\",",
+													"        \"url\"",
+													"    ],",
+													"    \"properties\": {",
+													"        \"id\": {",
+													"            \"$id\": \"#/properties/id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                2261328624",
+													"            ]",
+													"        },",
+													"        \"order\": {",
+													"            \"$id\": \"#/properties/order\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The order schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                1",
+													"            ]",
+													"        },",
+													"        \"color\": {",
+													"            \"$id\": \"#/properties/color\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The color schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                47",
+													"            ]",
+													"        },",
+													"        \"name\": {",
+													"            \"$id\": \"#/properties/name\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The name schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"Assignment 2\"",
+													"            ]",
+													"        },",
+													"        \"comment_count\": {",
+													"            \"$id\": \"#/properties/comment_count\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The comment_count schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"shared\": {",
+													"            \"$id\": \"#/properties/shared\",",
+													"            \"type\": \"boolean\",",
+													"            \"title\": \"The shared schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": false,",
+													"            \"examples\": [",
+													"                false",
+													"            ]",
+													"        },",
+													"        \"favorite\": {",
+													"            \"$id\": \"#/properties/favorite\",",
+													"            \"type\": \"boolean\",",
+													"            \"title\": \"The favorite schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": false,",
+													"            \"examples\": [",
+													"                false",
+													"            ]",
+													"        },",
+													"        \"sync_id\": {",
+													"            \"$id\": \"#/properties/sync_id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The sync_id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"url\": {",
+													"            \"$id\": \"#/properties/url\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The url schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"https://todoist.com/showProject?id=2261328624\"",
+													"            ]",
+													"        }",
+													"    },",
+													"    \"additionalProperties\": true",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"{{projectName}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{projectsURL}}",
+											"host": [
+												"{{baseURL}}{{projectsURL}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Project",
+							"item": [
+								{
+									"name": "Get a Project",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();",
+													"jsonData = JSON.stringify(jsonData);",
+													"",
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"JSON content is correct\", function () {",
+													"    pm.expect(pm.environment.get(\"jsonProject\")).to.eql(jsonData);",
+													"});",
+													"",
+													"// Schema",
+													"pm.test(\"Schema is correct\", () => {",
+													"    pm.response.to.have.jsonSchema(pm.variables.get(\"schemaProject\"));",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"schemaProject\",{",
+													"    \"title\": \"Project schema\",",
+													"    \"required\": [",
+													"        \"id\",",
+													"        \"order\",",
+													"        \"color\",",
+													"        \"name\",",
+													"        \"comment_count\",",
+													"        \"shared\",",
+													"        \"favorite\",",
+													"        \"sync_id\",",
+													"        \"url\"",
+													"    ],",
+													"    \"properties\": {",
+													"        \"id\": {",
+													"            \"$id\": \"#/properties/id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                2261328624",
+													"            ]",
+													"        },",
+													"        \"order\": {",
+													"            \"$id\": \"#/properties/order\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The order schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                1",
+													"            ]",
+													"        },",
+													"        \"color\": {",
+													"            \"$id\": \"#/properties/color\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The color schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                47",
+													"            ]",
+													"        },",
+													"        \"name\": {",
+													"            \"$id\": \"#/properties/name\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The name schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"Assignment 2\"",
+													"            ]",
+													"        },",
+													"        \"comment_count\": {",
+													"            \"$id\": \"#/properties/comment_count\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The comment_count schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"shared\": {",
+													"            \"$id\": \"#/properties/shared\",",
+													"            \"type\": \"boolean\",",
+													"            \"title\": \"The shared schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": false,",
+													"            \"examples\": [",
+													"                false",
+													"            ]",
+													"        },",
+													"        \"favorite\": {",
+													"            \"$id\": \"#/properties/favorite\",",
+													"            \"type\": \"boolean\",",
+													"            \"title\": \"The favorite schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": false,",
+													"            \"examples\": [",
+													"                false",
+													"            ]",
+													"        },",
+													"        \"sync_id\": {",
+													"            \"$id\": \"#/properties/sync_id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The sync_id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"url\": {",
+													"            \"$id\": \"#/properties/url\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The url schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"https://todoist.com/showProject?id=2261328624\"",
+													"            ]",
+													"        }",
+													"    },",
+													"    \"additionalProperties\": true",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{projectsURL}}/{{projectId}}",
+											"host": [
+												"{{baseURL}}{{projectsURL}}"
+											],
+											"path": [
+												"{{projectId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "TASKS",
+					"item": [
+						{
+							"name": "Create Task",
+							"item": [
+								{
+									"name": "Create a new task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();",
+													"var contentTask = pm.variables.get(\"contentTask\");",
+													"var projectId = pm.environment.get(\"projectId\");",
+													"var dueString = pm.variables.get(\"dueString\");",
+													"",
+													"pm.environment.set(\"taskId\", jsonData.id);",
+													"pm.environment.set(\"jsonTask\", JSON.stringify(jsonData));",
+													"",
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"JSON's content is correct\", function () {",
+													"    pm.expect(jsonData.content).to.eql(contentTask);",
+													"    pm.expect(jsonData.project_id).to.eql(projectId);",
+													"    pm.expect(jsonData.due.string).to.eql(dueString);",
+													"});",
+													"",
+													"// Schema",
+													"pm.test(\"Schema is correct\", () => {",
+													"    pm.response.to.have.jsonSchema(pm.variables.get(\"schemaTask\"));",
+													"});",
+													"",
+													"// Setting number of iterations for next request",
+													"pm.environment.set(\"numberTasks\", 2)",
+													"",
+													"// Starts filling tasksArray",
+													"var tasksArray = [];",
+													"tasksArray.push(jsonData);",
+													"pm.environment.set(\"tasksArray\", JSON.stringify(tasksArray));"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"contentTask\", pm.variables.replaceIn('{{$randomPhrase}}') + \" \" + pm.variables.replaceIn('{{$guid}}'));",
+													"pm.variables.set(\"dueString\", \"next \" + pm.variables.replaceIn('{{$randomWeekday}}'));",
+													"pm.variables.set(\"schemaTask\", {",
+													"    \"title\": \"Task schema\",",
+													"    \"required\": [",
+													"        \"id\",",
+													"        \"assigner\",",
+													"        \"project_id\",",
+													"        \"section_id\",",
+													"        \"order\",",
+													"        \"content\",",
+													"        \"completed\",",
+													"        \"label_ids\",",
+													"        \"priority\",",
+													"        \"comment_count\",",
+													"        \"creator\",",
+													"        \"created\",",
+													"        \"due\",",
+													"        \"url\"",
+													"    ],",
+													"    \"properties\": {",
+													"        \"id\": {",
+													"            \"$id\": \"#/properties/id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                4678863173",
+													"            ]",
+													"        },",
+													"        \"assigner\": {",
+													"            \"$id\": \"#/properties/assigner\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The assigner schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"project_id\": {",
+													"            \"$id\": \"#/properties/project_id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The project_id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                2261361871",
+													"            ]",
+													"        },",
+													"        \"section_id\": {",
+													"            \"$id\": \"#/properties/section_id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The section_id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"order\": {",
+													"            \"$id\": \"#/properties/order\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The order schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                2",
+													"            ]",
+													"        },",
+													"        \"content\": {",
+													"            \"$id\": \"#/properties/content\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The content schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"I'll calculate the haptic HTTP hard drive, that should program the JSON pixel!\"",
+													"            ]",
+													"        },",
+													"        \"completed\": {",
+													"            \"$id\": \"#/properties/completed\",",
+													"            \"type\": \"boolean\",",
+													"            \"title\": \"The completed schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": false,",
+													"            \"examples\": [",
+													"                false",
+													"            ]",
+													"        },",
+													"        \"label_ids\": {",
+													"            \"$id\": \"#/properties/label_ids\",",
+													"            \"type\": \"array\",",
+													"            \"title\": \"The label_ids schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": [],",
+													"            \"examples\": [",
+													"                []",
+													"            ],",
+													"            \"additionalItems\": true,",
+													"            \"items\": {",
+													"                \"$id\": \"#/properties/label_ids/items\"",
+													"            }",
+													"        },",
+													"        \"priority\": {",
+													"            \"$id\": \"#/properties/priority\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The priority schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                4",
+													"            ]",
+													"        },",
+													"        \"comment_count\": {",
+													"            \"$id\": \"#/properties/comment_count\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The comment_count schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"creator\": {",
+													"            \"$id\": \"#/properties/creator\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The creator schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                33105013",
+													"            ]",
+													"        },",
+													"        \"created\": {",
+													"            \"$id\": \"#/properties/created\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The created schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"2021-03-22T06:00:36Z\"",
+													"            ]",
+													"        },",
+													"        \"due\": {",
+													"            \"$id\": \"#/properties/due\",",
+													"            \"type\": \"object\",",
+													"            \"title\": \"The due schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": {},",
+													"            \"examples\": [",
+													"                {",
+													"                    \"recurring\": false,",
+													"                    \"string\": \"next Thursday\",",
+													"                    \"date\": \"2021-04-01\"",
+													"                }",
+													"            ],",
+													"            \"required\": [",
+													"                \"recurring\",",
+													"                \"string\",",
+													"                \"date\"",
+													"            ],",
+													"            \"properties\": {",
+													"                \"recurring\": {",
+													"                    \"$id\": \"#/properties/due/properties/recurring\",",
+													"                    \"type\": \"boolean\",",
+													"                    \"title\": \"The recurring schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": false,",
+													"                    \"examples\": [",
+													"                        false",
+													"                    ]",
+													"                },",
+													"                \"string\": {",
+													"                    \"$id\": \"#/properties/due/properties/string\",",
+													"                    \"type\": \"string\",",
+													"                    \"title\": \"The string schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": \"\",",
+													"                    \"examples\": [",
+													"                        \"next Thursday\"",
+													"                    ]",
+													"                },",
+													"                \"date\": {",
+													"                    \"$id\": \"#/properties/due/properties/date\",",
+													"                    \"type\": \"string\",",
+													"                    \"title\": \"The date schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": \"\",",
+													"                    \"examples\": [",
+													"                        \"2021-04-01\"",
+													"                    ]",
+													"                }",
+													"            },",
+													"            \"additionalProperties\": true",
+													"        },",
+													"        \"url\": {",
+													"            \"$id\": \"#/properties/url\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The url schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"https://todoist.com/showTask?id=4678863173\"",
+													"            ]",
+													"        }",
+													"    },",
+													"    \"additionalProperties\": true",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"{{contentTask}}\",\n    \"project_id\": {{projectId}},\n    \"due_string\": \"{{dueString}}\",\n    \"due_lang\": \"en\",\n    \"priority\": 4\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create new tasks",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();",
+													"var contentTask = pm.variables.get(\"contentTask\");",
+													"var projectId = pm.environment.get(\"projectId\");",
+													"var dueString = pm.variables.get(\"dueString\");",
+													"",
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"JSON's content is correct\", function () {",
+													"    pm.expect(jsonData.content).to.eql(contentTask);",
+													"    pm.expect(jsonData.project_id).to.eql(projectId);",
+													"    pm.expect(jsonData.due.string).to.eql(dueString);",
+													"});",
+													"",
+													"// Schema",
+													"pm.test(\"Schema is correct\", () => {",
+													"    pm.response.to.have.jsonSchema(pm.variables.get(\"schemaTask\"));",
+													"});",
+													"",
+													"// Get number of tasks to be created and loops until reached",
+													"var currentCount = pm.environment.get(\"numberTasks\") - 1;",
+													"if (currentCount > 0){",
+													" currentCount = currentCount - 1;",
+													" pm.environment.set(\"numberTasks\", currentCount);",
+													" postman.setNextRequest(\"Create new tasks\");",
+													"}",
+													"",
+													"//Fills tasks array on each iteration",
+													"var tasksArray = JSON.parse(pm.variables.get(\"tasksArray\"));",
+													"tasksArray.push(jsonData);",
+													"pm.environment.set(\"tasksArray\", JSON.stringify(tasksArray));"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"contentTask\", pm.variables.replaceIn('{{$randomPhrase}}') + \" \" + pm.variables.replaceIn('{{$guid}}'));",
+													"pm.variables.set(\"dueString\", \"next \" + pm.variables.replaceIn('{{$randomWeekday}}'));",
+													"pm.variables.set(\"schemaTask\", {",
+													"    \"title\": \"Task schema\",",
+													"    \"required\": [",
+													"        \"id\",",
+													"        \"assigner\",",
+													"        \"project_id\",",
+													"        \"section_id\",",
+													"        \"order\",",
+													"        \"content\",",
+													"        \"completed\",",
+													"        \"label_ids\",",
+													"        \"priority\",",
+													"        \"comment_count\",",
+													"        \"creator\",",
+													"        \"created\",",
+													"        \"due\",",
+													"        \"url\"",
+													"    ],",
+													"    \"properties\": {",
+													"        \"id\": {",
+													"            \"$id\": \"#/properties/id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                4678863173",
+													"            ]",
+													"        },",
+													"        \"assigner\": {",
+													"            \"$id\": \"#/properties/assigner\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The assigner schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"project_id\": {",
+													"            \"$id\": \"#/properties/project_id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The project_id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                2261361871",
+													"            ]",
+													"        },",
+													"        \"section_id\": {",
+													"            \"$id\": \"#/properties/section_id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The section_id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"order\": {",
+													"            \"$id\": \"#/properties/order\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The order schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                2",
+													"            ]",
+													"        },",
+													"        \"content\": {",
+													"            \"$id\": \"#/properties/content\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The content schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"I'll calculate the haptic HTTP hard drive, that should program the JSON pixel!\"",
+													"            ]",
+													"        },",
+													"        \"completed\": {",
+													"            \"$id\": \"#/properties/completed\",",
+													"            \"type\": \"boolean\",",
+													"            \"title\": \"The completed schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": false,",
+													"            \"examples\": [",
+													"                false",
+													"            ]",
+													"        },",
+													"        \"label_ids\": {",
+													"            \"$id\": \"#/properties/label_ids\",",
+													"            \"type\": \"array\",",
+													"            \"title\": \"The label_ids schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": [],",
+													"            \"examples\": [",
+													"                []",
+													"            ],",
+													"            \"additionalItems\": true,",
+													"            \"items\": {",
+													"                \"$id\": \"#/properties/label_ids/items\"",
+													"            }",
+													"        },",
+													"        \"priority\": {",
+													"            \"$id\": \"#/properties/priority\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The priority schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                4",
+													"            ]",
+													"        },",
+													"        \"comment_count\": {",
+													"            \"$id\": \"#/properties/comment_count\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The comment_count schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"creator\": {",
+													"            \"$id\": \"#/properties/creator\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The creator schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                33105013",
+													"            ]",
+													"        },",
+													"        \"created\": {",
+													"            \"$id\": \"#/properties/created\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The created schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"2021-03-22T06:00:36Z\"",
+													"            ]",
+													"        },",
+													"        \"due\": {",
+													"            \"$id\": \"#/properties/due\",",
+													"            \"type\": \"object\",",
+													"            \"title\": \"The due schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": {},",
+													"            \"examples\": [",
+													"                {",
+													"                    \"recurring\": false,",
+													"                    \"string\": \"next Thursday\",",
+													"                    \"date\": \"2021-04-01\"",
+													"                }",
+													"            ],",
+													"            \"required\": [",
+													"                \"recurring\",",
+													"                \"string\",",
+													"                \"date\"",
+													"            ],",
+													"            \"properties\": {",
+													"                \"recurring\": {",
+													"                    \"$id\": \"#/properties/due/properties/recurring\",",
+													"                    \"type\": \"boolean\",",
+													"                    \"title\": \"The recurring schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": false,",
+													"                    \"examples\": [",
+													"                        false",
+													"                    ]",
+													"                },",
+													"                \"string\": {",
+													"                    \"$id\": \"#/properties/due/properties/string\",",
+													"                    \"type\": \"string\",",
+													"                    \"title\": \"The string schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": \"\",",
+													"                    \"examples\": [",
+													"                        \"next Thursday\"",
+													"                    ]",
+													"                },",
+													"                \"date\": {",
+													"                    \"$id\": \"#/properties/due/properties/date\",",
+													"                    \"type\": \"string\",",
+													"                    \"title\": \"The date schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": \"\",",
+													"                    \"examples\": [",
+													"                        \"2021-04-01\"",
+													"                    ]",
+													"                }",
+													"            },",
+													"            \"additionalProperties\": true",
+													"        },",
+													"        \"url\": {",
+													"            \"$id\": \"#/properties/url\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The url schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"https://todoist.com/showTask?id=4678863173\"",
+													"            ]",
+													"        }",
+													"    },",
+													"    \"additionalProperties\": true",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"{{contentTask}}\",\n    \"project_id\": {{projectId}},\n    \"due_string\": \"{{dueString}}\",\n    \"due_lang\": \"en\",\n    \"priority\": 4\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Get tasks",
+							"item": [
+								{
+									"name": "Get an active task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();",
+													"",
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"JSON content is correct\", function () {",
+													"    pm.expect(pm.environment.get(\"jsonTask\")).to.eql(JSON.stringify(jsonData));",
+													"});",
+													"",
+													"// Schema",
+													"pm.test(\"Schema is correct\", () => {",
+													"    pm.response.to.have.jsonSchema(pm.variables.get(\"schemaTask\"));",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"schemaTask\", {",
+													"    \"title\": \"Task schema\",",
+													"    \"required\": [",
+													"        \"id\",",
+													"        \"assigner\",",
+													"        \"project_id\",",
+													"        \"section_id\",",
+													"        \"order\",",
+													"        \"content\",",
+													"        \"completed\",",
+													"        \"label_ids\",",
+													"        \"priority\",",
+													"        \"comment_count\",",
+													"        \"creator\",",
+													"        \"created\",",
+													"        \"due\",",
+													"        \"url\"",
+													"    ],",
+													"    \"properties\": {",
+													"        \"id\": {",
+													"            \"$id\": \"#/properties/id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                4678863173",
+													"            ]",
+													"        },",
+													"        \"assigner\": {",
+													"            \"$id\": \"#/properties/assigner\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The assigner schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"project_id\": {",
+													"            \"$id\": \"#/properties/project_id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The project_id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                2261361871",
+													"            ]",
+													"        },",
+													"        \"section_id\": {",
+													"            \"$id\": \"#/properties/section_id\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The section_id schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"order\": {",
+													"            \"$id\": \"#/properties/order\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The order schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                2",
+													"            ]",
+													"        },",
+													"        \"content\": {",
+													"            \"$id\": \"#/properties/content\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The content schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"I'll calculate the haptic HTTP hard drive, that should program the JSON pixel!\"",
+													"            ]",
+													"        },",
+													"        \"completed\": {",
+													"            \"$id\": \"#/properties/completed\",",
+													"            \"type\": \"boolean\",",
+													"            \"title\": \"The completed schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": false,",
+													"            \"examples\": [",
+													"                false",
+													"            ]",
+													"        },",
+													"        \"label_ids\": {",
+													"            \"$id\": \"#/properties/label_ids\",",
+													"            \"type\": \"array\",",
+													"            \"title\": \"The label_ids schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": [],",
+													"            \"examples\": [",
+													"                []",
+													"            ],",
+													"            \"additionalItems\": true,",
+													"            \"items\": {",
+													"                \"$id\": \"#/properties/label_ids/items\"",
+													"            }",
+													"        },",
+													"        \"priority\": {",
+													"            \"$id\": \"#/properties/priority\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The priority schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                4",
+													"            ]",
+													"        },",
+													"        \"comment_count\": {",
+													"            \"$id\": \"#/properties/comment_count\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The comment_count schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                0",
+													"            ]",
+													"        },",
+													"        \"creator\": {",
+													"            \"$id\": \"#/properties/creator\",",
+													"            \"type\": \"integer\",",
+													"            \"title\": \"The creator schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": 0,",
+													"            \"examples\": [",
+													"                33105013",
+													"            ]",
+													"        },",
+													"        \"created\": {",
+													"            \"$id\": \"#/properties/created\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The created schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"2021-03-22T06:00:36Z\"",
+													"            ]",
+													"        },",
+													"        \"due\": {",
+													"            \"$id\": \"#/properties/due\",",
+													"            \"type\": \"object\",",
+													"            \"title\": \"The due schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": {},",
+													"            \"examples\": [",
+													"                {",
+													"                    \"recurring\": false,",
+													"                    \"string\": \"next Thursday\",",
+													"                    \"date\": \"2021-04-01\"",
+													"                }",
+													"            ],",
+													"            \"required\": [",
+													"                \"recurring\",",
+													"                \"string\",",
+													"                \"date\"",
+													"            ],",
+													"            \"properties\": {",
+													"                \"recurring\": {",
+													"                    \"$id\": \"#/properties/due/properties/recurring\",",
+													"                    \"type\": \"boolean\",",
+													"                    \"title\": \"The recurring schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": false,",
+													"                    \"examples\": [",
+													"                        false",
+													"                    ]",
+													"                },",
+													"                \"string\": {",
+													"                    \"$id\": \"#/properties/due/properties/string\",",
+													"                    \"type\": \"string\",",
+													"                    \"title\": \"The string schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": \"\",",
+													"                    \"examples\": [",
+													"                        \"next Thursday\"",
+													"                    ]",
+													"                },",
+													"                \"date\": {",
+													"                    \"$id\": \"#/properties/due/properties/date\",",
+													"                    \"type\": \"string\",",
+													"                    \"title\": \"The date schema\",",
+													"                    \"description\": \"An explanation about the purpose of this instance.\",",
+													"                    \"default\": \"\",",
+													"                    \"examples\": [",
+													"                        \"2021-04-01\"",
+													"                    ]",
+													"                }",
+													"            },",
+													"            \"additionalProperties\": true",
+													"        },",
+													"        \"url\": {",
+													"            \"$id\": \"#/properties/url\",",
+													"            \"type\": \"string\",",
+													"            \"title\": \"The url schema\",",
+													"            \"description\": \"An explanation about the purpose of this instance.\",",
+													"            \"default\": \"\",",
+													"            \"examples\": [",
+													"                \"https://todoist.com/showTask?id=4678863173\"",
+													"            ]",
+													"        }",
+													"    },",
+													"    \"additionalProperties\": true",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{taskId}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{taskId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get active tasks",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = pm.response.json();",
+													"var tasksArray = JSON.parse(pm.variables.get(\"tasksArray\"));",
+													"",
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"JSON content is correct\", function () {",
+													"    jsonData = JSON.stringify(jsonData);",
+													"    pm.expect(pm.environment.get(\"tasksArray\")).to.eql(jsonData);",
+													"});",
+													"",
+													"// Schema",
+													"pm.test(\"Schema is correct\", () => {",
+													"    pm.response.to.have.jsonSchema(pm.variables.get(\"schemaTasks\"));",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"schemaTasks\", {",
+													"    \"type\": \"array\",",
+													"    \"title\": \"Tasks schema\",",
+													"    \"additionalItems\": true,",
+													"    \"items\": {",
+													"        \"$id\": \"#/items\",",
+													"        \"anyOf\": [",
+													"            {",
+													"                \"$id\": \"#/items/anyOf/0\",",
+													"                \"type\": \"object\",",
+													"                \"title\": \"The first anyOf schema\",",
+													"                \"description\": \"An explanation about the purpose of this instance.\",",
+													"                \"default\": {},",
+													"                \"examples\": [",
+													"                    {",
+													"                        \"id\": 4679403730,",
+													"                        \"assigner\": 0,",
+													"                        \"project_id\": 2261377272,",
+													"                        \"section_id\": 0,",
+													"                        \"order\": 1,",
+													"                        \"content\": \"You can't connect the panel without programming the open-source SCSI driver! 316134ea-5b37-4fe9-b465-b5d9a9d23341\",",
+													"                        \"completed\": false,",
+													"                        \"label_ids\": [],",
+													"                        \"priority\": 4,",
+													"                        \"comment_count\": 0,",
+													"                        \"creator\": 33105013,",
+													"                        \"created\": \"2021-03-22T09:42:15Z\",",
+													"                        \"due\": {",
+													"                            \"recurring\": false,",
+													"                            \"string\": \"next Saturday\",",
+													"                            \"date\": \"2021-04-03\"",
+													"                        },",
+													"                        \"url\": \"https://todoist.com/showTask?id=4679403730\"",
+													"                    }",
+													"                ],",
+													"                \"required\": [",
+													"                    \"id\",",
+													"                    \"assigner\",",
+													"                    \"project_id\",",
+													"                    \"section_id\",",
+													"                    \"order\",",
+													"                    \"content\",",
+													"                    \"completed\",",
+													"                    \"label_ids\",",
+													"                    \"priority\",",
+													"                    \"comment_count\",",
+													"                    \"creator\",",
+													"                    \"created\",",
+													"                    \"due\",",
+													"                    \"url\"",
+													"                ],",
+													"                \"properties\": {",
+													"                    \"id\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/id\",",
+													"                        \"type\": \"integer\",",
+													"                        \"title\": \"The id schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": 0,",
+													"                        \"examples\": [",
+													"                            4679403730",
+													"                        ]",
+													"                    },",
+													"                    \"assigner\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/assigner\",",
+													"                        \"type\": \"integer\",",
+													"                        \"title\": \"The assigner schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": 0,",
+													"                        \"examples\": [",
+													"                            0",
+													"                        ]",
+													"                    },",
+													"                    \"project_id\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/project_id\",",
+													"                        \"type\": \"integer\",",
+													"                        \"title\": \"The project_id schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": 0,",
+													"                        \"examples\": [",
+													"                            2261377272",
+													"                        ]",
+													"                    },",
+													"                    \"section_id\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/section_id\",",
+													"                        \"type\": \"integer\",",
+													"                        \"title\": \"The section_id schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": 0,",
+													"                        \"examples\": [",
+													"                            0",
+													"                        ]",
+													"                    },",
+													"                    \"order\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/order\",",
+													"                        \"type\": \"integer\",",
+													"                        \"title\": \"The order schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": 0,",
+													"                        \"examples\": [",
+													"                            1",
+													"                        ]",
+													"                    },",
+													"                    \"content\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/content\",",
+													"                        \"type\": \"string\",",
+													"                        \"title\": \"The content schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": \"\",",
+													"                        \"examples\": [",
+													"                            \"You can't connect the panel without programming the open-source SCSI driver! 316134ea-5b37-4fe9-b465-b5d9a9d23341\"",
+													"                        ]",
+													"                    },",
+													"                    \"completed\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/completed\",",
+													"                        \"type\": \"boolean\",",
+													"                        \"title\": \"The completed schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": false,",
+													"                        \"examples\": [",
+													"                            false",
+													"                        ]",
+													"                    },",
+													"                    \"label_ids\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/label_ids\",",
+													"                        \"type\": \"array\",",
+													"                        \"title\": \"The label_ids schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": [],",
+													"                        \"examples\": [",
+													"                            []",
+													"                        ],",
+													"                        \"additionalItems\": true,",
+													"                        \"items\": {",
+													"                            \"$id\": \"#/items/anyOf/0/properties/label_ids/items\"",
+													"                        }",
+													"                    },",
+													"                    \"priority\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/priority\",",
+													"                        \"type\": \"integer\",",
+													"                        \"title\": \"The priority schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": 0,",
+													"                        \"examples\": [",
+													"                            4",
+													"                        ]",
+													"                    },",
+													"                    \"comment_count\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/comment_count\",",
+													"                        \"type\": \"integer\",",
+													"                        \"title\": \"The comment_count schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": 0,",
+													"                        \"examples\": [",
+													"                            0",
+													"                        ]",
+													"                    },",
+													"                    \"creator\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/creator\",",
+													"                        \"type\": \"integer\",",
+													"                        \"title\": \"The creator schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": 0,",
+													"                        \"examples\": [",
+													"                            33105013",
+													"                        ]",
+													"                    },",
+													"                    \"created\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/created\",",
+													"                        \"type\": \"string\",",
+													"                        \"title\": \"The created schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": \"\",",
+													"                        \"examples\": [",
+													"                            \"2021-03-22T09:42:15Z\"",
+													"                        ]",
+													"                    },",
+													"                    \"due\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/due\",",
+													"                        \"type\": \"object\",",
+													"                        \"title\": \"The due schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": {},",
+													"                        \"examples\": [",
+													"                            {",
+													"                                \"recurring\": false,",
+													"                                \"string\": \"next Saturday\",",
+													"                                \"date\": \"2021-04-03\"",
+													"                            }",
+													"                        ],",
+													"                        \"required\": [",
+													"                            \"recurring\",",
+													"                            \"string\",",
+													"                            \"date\"",
+													"                        ],",
+													"                        \"properties\": {",
+													"                            \"recurring\": {",
+													"                                \"$id\": \"#/items/anyOf/0/properties/due/properties/recurring\",",
+													"                                \"type\": \"boolean\",",
+													"                                \"title\": \"The recurring schema\",",
+													"                                \"description\": \"An explanation about the purpose of this instance.\",",
+													"                                \"default\": false,",
+													"                                \"examples\": [",
+													"                                    false",
+													"                                ]",
+													"                            },",
+													"                            \"string\": {",
+													"                                \"$id\": \"#/items/anyOf/0/properties/due/properties/string\",",
+													"                                \"type\": \"string\",",
+													"                                \"title\": \"The string schema\",",
+													"                                \"description\": \"An explanation about the purpose of this instance.\",",
+													"                                \"default\": \"\",",
+													"                                \"examples\": [",
+													"                                    \"next Saturday\"",
+													"                                ]",
+													"                            },",
+													"                            \"date\": {",
+													"                                \"$id\": \"#/items/anyOf/0/properties/due/properties/date\",",
+													"                                \"type\": \"string\",",
+													"                                \"title\": \"The date schema\",",
+													"                                \"description\": \"An explanation about the purpose of this instance.\",",
+													"                                \"default\": \"\",",
+													"                                \"examples\": [",
+													"                                    \"2021-04-03\"",
+													"                                ]",
+													"                            }",
+													"                        },",
+													"                        \"additionalProperties\": true",
+													"                    },",
+													"                    \"url\": {",
+													"                        \"$id\": \"#/items/anyOf/0/properties/url\",",
+													"                        \"type\": \"string\",",
+													"                        \"title\": \"The url schema\",",
+													"                        \"description\": \"An explanation about the purpose of this instance.\",",
+													"                        \"default\": \"\",",
+													"                        \"examples\": [",
+													"                            \"https://todoist.com/showTask?id=4679403730\"",
+													"                        ]",
+													"                    }",
+													"                },",
+													"                \"additionalProperties\": true",
+													"            }",
+													"        ]",
+													"    }",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Update a task",
+							"item": [
+								{
+									"name": "Update a task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content not tested as endpoint returns an empty response",
+													"",
+													"// Schema not tested as endpoint returns an empty response"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"contentTask\", pm.variables.replaceIn(\"[UPDATED] \" + '{{$randomPhrase}}') + \" \" + pm.variables.replaceIn('{{$guid}}'));",
+													"pm.variables.set(\"dueString\", \"next \" + pm.variables.replaceIn('{{$randomWeekday}}'));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"{{contentTask}}\",\n    \"due_string\": \"{{dueString}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{taskId}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{taskId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Complete a task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content not tested as endpoint returns an empty response",
+													"",
+													"// Schema not tested as endpoint returns an empty response"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{taskId}}/{{closeURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{taskId}}",
+												"{{closeURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Reopen a task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content not tested as endpoint returns an empty response",
+													"",
+													"// Schema not tested as endpoint returns an empty response"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{taskId}}/{{reopenURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{taskId}}",
+												"{{reopenURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete a task",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Response status code and response time verifications inherited from \"Positive test cases\" parent folder",
+													"",
+													"// Content not tested as endpoint returns an empty response",
+													"",
+													"// Schema not tested as endpoint returns an empty response"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{taskId}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{taskId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"var responseCode = pm.response.code;",
+							"",
+							"if (responseCode == 200){",
+							"    pm.test(\"Status code 200: Request successfully processed with JSON response\", function () {",
+							"        pm.response.to.be.withBody;",
+							"        pm.response.to.not.have.jsonBody(\"error\");",
+							"    });",
+							"} else if (responseCode == 204) {",
+							"    pm.test(\"Status code 204: Request successfully processed without JSON response\", function () {",
+							"        pm.response.to.not.be.withBody;",
+							"    });",
+							"} else {",
+							"    pm.test(\"Status code not 2xx: Request unsuccessfully processed\", function () {",
+							"        pm.expect.fail(\"Status code not 2xx: Request unsuccessfully processed\")",
+							"    });",
+							"}"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Negative test cases",
+			"item": [
+				{
+					"name": "PROJECT",
+					"item": [
+						{
+							"name": "Create Project",
+							"item": [
+								{
+									"name": "Create new project - Missing name",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"Empty name\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{projectsURL}}",
+											"host": [
+												"{{baseURL}}{{projectsURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create new project - Wrong URL",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"404 page not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"{{projectName}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{wrongProjectsURL}}",
+											"host": [
+												"{{baseURL}}{{wrongProjectsURL}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Project",
+							"item": [
+								{
+									"name": "Get a Project - Wrong Project ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"Not Found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{projectsURL}}/{{nonexistentProjectId}}",
+											"host": [
+												"{{baseURL}}{{projectsURL}}"
+											],
+											"path": [
+												"{{nonexistentProjectId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a Project - Wrong URL",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content, projectId with incorrect format",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"404 page not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{projectsURL}}/{{wrongProjectId}}",
+											"host": [
+												"{{baseURL}}{{projectsURL}}"
+											],
+											"path": [
+												"{{wrongProjectId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "TASKS",
+					"item": [
+						{
+							"name": "Create Task",
+							"item": [
+								{
+									"name": "Create a new task - Empty content",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"Empty content\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"contentTask\", pm.variables.replaceIn('{{$randomPhrase}}') + \" \" + pm.variables.replaceIn('{{$guid}}'));",
+													"pm.variables.set(\"dueString\", \"next \" + pm.variables.replaceIn('{{$randomWeekday}}'));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"\",\n    \"project_id\": {{projectId}},\n    \"due_string\": \"{{dueString}}\",\n    \"due_lang\": \"en\",\n    \"priority\": 4\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create a new task - Missing content key&value",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"Empty content\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"contentTask\", pm.variables.replaceIn('{{$randomPhrase}}') + \" \" + pm.variables.replaceIn('{{$guid}}'));",
+													"pm.variables.set(\"dueString\", \"next \" + pm.variables.replaceIn('{{$randomWeekday}}'));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"project_id\": {{projectId}},\n    \"due_string\": \"{{dueString}}\",\n    \"due_lang\": \"en\",\n    \"priority\": 4\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create a new task - Wrong URL",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"404 page not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.variables.set(\"contentTask\", pm.variables.replaceIn('{{$randomPhrase}}') + \" \" + pm.variables.replaceIn('{{$guid}}'));",
+													"pm.variables.set(\"dueString\", \"next \" + pm.variables.replaceIn('{{$randomWeekday}}'));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"{{contentTask}}\",\n    \"project_id\": {{projectId}},\n    \"due_string\": \"{{dueString}}\",\n    \"due_lang\": \"en\",\n    \"priority\": 4\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{wrongTasksURL}}",
+											"host": [
+												"{{baseURL}}{{wrongTasksURL}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Get tasks",
+							"item": [
+								{
+									"name": "Get an active task - Wrong Task ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"404 page not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{wrongTaskId}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{wrongTaskId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get an active task - Nonexistent Task ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"Not Found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{nonexistentTaskId}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{nonexistentTaskId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get active tasks - Wrong Tasks URL",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content, projectId with incorrect format",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"404 page not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{wrongTasksURL}}",
+											"host": [
+												"{{baseURL}}{{wrongTasksURL}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Update a task",
+							"item": [
+								{
+									"name": "Update a task - Empty content",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"At least one of supported fields should be set and non-empty\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"content\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{taskId}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{taskId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Complete a task - Wrong Task ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"404 page not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{wrongTaskId}}/{{closeURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{wrongTaskId}}",
+												"{{closeURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Complete a task - Nonexistent Task ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content, this test fails because this is a todoist bug, is not responding with 4xx when the taskId doesn't exists",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"Not Found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{nonexistentTaskId}}/{{closeURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{nonexistentTaskId}}",
+												"{{closeURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Reopen a task - Wrong Task ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"404 page not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{wrongTaskId}}/{{reopenURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{wrongTaskId}}",
+												"{{reopenURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Reopen a task - Nonexistent Task ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"Item not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-Id",
+												"value": "$(uuidgen)",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{nonexistentTaskId}}/{{reopenURL}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{nonexistentTaskId}}",
+												"{{reopenURL}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete a task - Wrong Task ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"404 page not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{wrongTaskId}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{wrongTaskId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete a task - Nonexistent Task ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.text();",
+													"",
+													"// Response status code and response time verifications inherited from \"Negative test cases\" parent folder",
+													"",
+													"// Content",
+													"pm.test(\"Response content is correct\", function () {",
+													"    pm.expect(responseData).to.eql(\"Item not found\\n\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseURL}}{{tasksURL}}/{{nonexistentTaskId}}",
+											"host": [
+												"{{baseURL}}{{tasksURL}}"
+											],
+											"path": [
+												"{{nonexistentTaskId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Response time is less than 600ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);",
+							"});",
+							"",
+							"var responseCode = pm.response.code;",
+							"",
+							"if (responseCode == 400){",
+							"    pm.test(\"Status code 400: Request unsuccessfully processed with response\", function () {",
+							"        pm.response.to.have.status(400);",
+							"        pm.response.to.be.withBody;",
+							"    });",
+							"} else if (responseCode == 404) {",
+							"    pm.test(\"Status code 404: Request unsuccessfully processed with  response\", function () {",
+							"        pm.response.to.be.withBody;",
+							"    });",
+							"} else {",
+							"    pm.test(\"Status code not 4xx: Request successfully processed with  response\", function () {",
+							"        pm.expect.fail(\"Status code not 4xx: Request successfully processed with  response\")",
+							"    });",
+							"}"
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{{{token}}}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

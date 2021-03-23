@@ -1,0 +1,11 @@
+{
+  "name": "assignment_2",
+  "version": "1.0.0",
+  "description": "Assignment 2 of Wizeline's automation course",
+  "main": "index.js",
+  "scripts": {
+    "test-collection": "newman run MY_APP/tests/api/collection/Todoist.postman_collection.json -e MY_APP/tests/api/envVariables/Assignment_2.postman_environment.json -r htmlextra --reporter-htmlextra-export 'MY_APP/tests/api/reports/TodoistAPITestReport.html'"
+  },
+  "author": "Ricardo Toledo",
+  "license": "ISC"
+}
